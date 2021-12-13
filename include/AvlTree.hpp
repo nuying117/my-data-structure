@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Node.hpp"
+#include <functional>
 
 template <typename DataType>
 class AvlTree
 {
 public:
     using NodeType = Node<DataType>;
-    using CallBackFunc = void (*)(const DataType&);
+
 public:
     ~AvlTree()
     {   
@@ -21,17 +22,20 @@ public:
         this->doBalance(this->_root);
     }
 
-    void innerOrderTraverse(CallBackFunc cb)
+    template<typename CALLBACK>
+    void innerOrderTraverse(CALLBACK cb)
     {
         doInnerOrderTraverse(this->_root, cb);
     }
 
-    void preOrderTraverse(CallBackFunc cb)
+    template<typename CALLBACK>
+    void preOrderTraverse(CALLBACK cb)
     {
         doPreOrderTraverse(this->_root, cb);
     }
 
-    void postOrderTraverse(CallBackFunc cb)
+    template<typename CALLBACK>
+    void postOrderTraverse(CALLBACK cb)
     {
         doPostOrderTraverse(this->_root, cb);
     }
@@ -134,7 +138,8 @@ protected:
          root->left() = oldRoot;
     }
 
-    void doInnerOrderTraverse(const NodeType* root, CallBackFunc cb)
+    template<typename CALLBACK>
+    void doInnerOrderTraverse(const NodeType* root, CALLBACK cb)
     {
         if (!root)
         {
@@ -146,7 +151,8 @@ protected:
         doInnerOrderTraverse(root->right(), cb);
     }
 
-    void doPreOrderTraverse(const NodeType* root, CallBackFunc cb)
+    template<typename CALLBACK>
+    void doPreOrderTraverse(const NodeType* root, CALLBACK cb)
     {
         if (!root)
         {
@@ -158,7 +164,8 @@ protected:
         doPreOrderTraverse(root->right(), cb);
     }
 
-    void doPostOrderTraverse(const NodeType* root, CallBackFunc cb)
+    template<typename CALLBACK>
+    void doPostOrderTraverse(const NodeType* root, CALLBACK cb)
     {
         if (!root)
         {
